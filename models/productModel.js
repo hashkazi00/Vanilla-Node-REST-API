@@ -23,9 +23,12 @@ function create(product) {
     return new Promise((resolve, reject) => {
 
         const newProduct = { id: uuidv4(), ...product };
+
         products.push(newProduct);
-        writeFileToData('./data/products.json', products)
-        resolve(newProduct) //acknowledge by returning the same product 
+
+        writeFileToData('./data/products.json', products);
+
+        resolve(newProduct); //acknowledge by returning the same product 
 
     })
 }

@@ -1,6 +1,7 @@
 //if we would have made use of destrcuturing to directly extarct te findAll function from the module we could have not required to use the . (dot) to accesss it. instead we culd have accsesedd it directly as `findAll()`.
 
 const Product = require('../models/productModel');
+const { getPostData } = require('../utils');
 
 
 //because our model returns a promise we make use of async/await
@@ -43,24 +44,76 @@ async function getProductById(req, res, id) {
 // @route /api/products
 async function createProduct(req, res) {
     try {
+        const body = await getPostData(req); //a promise which gets us the body 
+
+        const { title, description, price } = JSON.parse(body);
+
         const product = {
-            name: 'New Product',
-            description: 'The best airphone you may ever experience',
-            price: 19
-        }
+            title,
+            description,
+            price
+        };
 
         const newProduct = await Product.create(product);
 
-        res.writeHead(201, { //201 for resource created status
+        res.writeHead(201, {
             'Content-type': 'application/json'
         });
 
         return res.end(JSON.stringify(newProduct))
 
+
     } catch (error) {
         console.log(error);
     }
 }
+
+
+
+
+
+// @desc Create a product
+// @route /api/products
+// async function createProduct(req, res) {
+//     try {
+
+//         //handling the post with data in the body
+//         let body = '';
+
+//         //1. Convert the data in the body to 'json'/string
+//         //'data' is an event on the request of sending data
+//         req.on('data', (chunk) => { //chunk is a buffer we now need to append the data in the buffer to body
+//             body += chunk.toString(); //JSON format
+//         });
+
+//         //2. convert the 'body' to js object and then extract the data to send te response
+//         //'end' is the event that is fired on the end of the request
+//         req.on('end', async () => {
+
+//             //convert the string data(JSON) to object.
+//             const { title, description, price } = JSON.parse(body); //we implicitly have accesss to the 'body' 
+
+//             const product = {
+//                 title,
+//                 description,
+//                 price
+//             };
+
+//             const newProduct = await Product.create(product); //because we are awaiting response here, the enclosing function should be async
+
+//             res.writeHead(201, { //201 for resource created status
+//                 'Content-type': 'application/json'
+//             });
+
+//             return res.end(JSON.stringify(newProduct))
+//         })
+
+
+
+//     } catch (error) {
+//         console.log(error);
+//     }
+// }
 
 module.exports = {
     getProducts,

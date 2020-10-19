@@ -30,19 +30,28 @@ async function getProductById(req, res, id) {
     try {
 
         const product = await Product.findById(id);
+        if (!product) {
+            res.writeHead(404, {
+                'Content-Type': 'application/json'
+            });
+            res.end(JSON.stringify({ Message: 'Product not found!!!' }));
+        } else {
+            res.writeHead(200, {
+                'Content-type': 'application/json'
+            });
+            res.end(JSON.stringify(product))
+        }
 
-        res.writeHead(200, {
-            'Content-type': 'application/json'
-        });
-        res.end(JSON.stringify(product))
+
     } catch (error) {
         console.log(error);
     }
 }
 
-// @desc Create a product
+// @desc POST Create a product
 // @route /api/products
 async function createProduct(req, res) {
+
     try {
         const body = await getPostData(req); //a promise which gets us the body 
 
@@ -61,7 +70,6 @@ async function createProduct(req, res) {
         });
 
         return res.end(JSON.stringify(newProduct))
-
 
     } catch (error) {
         console.log(error);
@@ -115,8 +123,77 @@ async function createProduct(req, res) {
 //     }
 // }
 
+
+
+// @desc Update Product by ID
+// @route PUT /api/product/:id
+async function updateProduct(req, res, id) {
+    try {
+        const product = await Product.findById(id);
+
+        if (!product) {
+            res.writeHead(404, {
+                'Content-Type': 'application/json'
+            });
+            res.end(JSON.stringify({ Message: 'Product not found!!!' }));
+        } else {
+            const body = await getPostData(req); //a promise which gets us the body 
+
+            const { title, description, price } = JSON.parse(body);
+
+            const productData = {
+                //or operator is used so that we allow the user to update specific parts 
+                title: title || product.title,
+                description: description || product.description,
+                price: price || product.price
+            };
+
+            const updProduct = await Product.update(id, productData);
+
+            res.writeHead(200, {
+                'Content-type': 'application/json'
+            });
+
+            return res.end(JSON.stringify(updProduct))
+        }
+
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+
+// @desc Delete Product by ID
+// @route DELETE /api/product/:id
+async function deleteProduct(req, res, id) {
+    try {
+        const product = await Product.findById(id);
+
+        if (!product) {
+            res.writeHead(404, {
+                'Content-Type': 'application/json'
+            });
+            res.end(JSON.stringify({ Message: 'Product not found!!!' }));
+        } else {
+
+            await Product.deleteById(id);
+
+            res.writeHead(200, {
+                'Content-type': 'application/json'
+            });
+
+            return res.end(JSON.stringify({ message: `Product with id${id} removed  :)` }))
+        }
+
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 module.exports = {
     getProducts,
     getProductById,
-    createProduct
+    createProduct,
+    updateProduct,
+    deleteProduct
 }

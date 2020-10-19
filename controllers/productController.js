@@ -39,7 +39,31 @@ async function getProductById(req, res, id) {
     }
 }
 
+// @desc Create a product
+// @route /api/products
+async function createProduct(req, res) {
+    try {
+        const product = {
+            name: 'New Product',
+            description: 'The best airphone you may ever experience',
+            price: 19
+        }
+
+        const newProduct = await Product.create(product);
+
+        res.writeHead(201, { //201 for resource created status
+            'Content-type': 'application/json'
+        });
+
+        return res.end(JSON.stringify(newProduct))
+
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 module.exports = {
     getProducts,
-    getProductById
+    getProductById,
+    createProduct
 }

@@ -10,5 +10,8 @@
   },
   "keywords": [],
   "author": "Sahil Kazi",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "uuid": "^8.3.1"
+  }
 }

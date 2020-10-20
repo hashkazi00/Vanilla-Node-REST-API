@@ -29,7 +29,7 @@ async function getProducts(req, res) { //this function is going to be called whe
 async function getProductById(req, res, id) {
     try {
 
-        const product = await Product.findById(id);
+        const product = await Product.sendById(id);
         if (!product) {
             res.writeHead(404, {
                 'Content-Type': 'application/json'
@@ -47,6 +47,31 @@ async function getProductById(req, res, id) {
         console.log(error);
     }
 }
+
+// @desc Get single product
+// @route /product/:id
+async function getProductByIdForView(req, res, id) {
+    try {
+
+        const product = await Product.sendById(id);
+        if (!product) {
+            res.writeHead(404, {
+                'Content-Type': 'application/json'
+            });
+            res.end(JSON.stringify({ Message: 'Product not found!!!' }));
+        } else {
+            res.writeHead(200, {
+                'Content-type': 'text/html'
+            });
+            res.end(product)
+        }
+
+
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 
 // @desc POST Create a product
 // @route /api/products
@@ -195,5 +220,6 @@ module.exports = {
     getProductById,
     createProduct,
     updateProduct,
-    deleteProduct
+    deleteProduct,
+    getProductByIdForView
 }

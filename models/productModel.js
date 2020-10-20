@@ -1,6 +1,11 @@
+const fs = require('fs');
+const templateOverview = fs.readFileSync(`./views/overviewTemplate.html`, 'utf-8');
+const templateCard = fs.readFileSync(`./views/cardTemplate.html`, 'utf-8');
+const templateProduct = fs.readFileSync(`./views/productTemplate.html`, 'utf-8');
+
 const products = require('../data/products');
 const { v4: uuidv4 } = require('uuid');
-const { writeFileToData } = require('../utils')
+const { writeFileToData, replaceTemplate } = require('../utils');
 
 function findAll() {
 
@@ -17,6 +22,12 @@ function findById(id) {
         resolve(product);
     })
 }
+
+async function sendById(id) {
+    const product = await findById(id);
+    return replaceTemplate(templateProduct, product);
+}
+
 
 function create(product) {
 
@@ -80,5 +91,6 @@ module.exports = {
     findById,
     create,
     update,
-    deleteById
+    deleteById,
+    sendById
 }

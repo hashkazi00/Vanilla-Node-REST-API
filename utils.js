@@ -28,7 +28,21 @@ function getPostData(req) {
     })
 }
 
+function replaceTemplate(card, data) { //a reusable function that can be used for all our pages, note that if the regex fails to match we just skip
+
+    let output = card; //Good functional programming practice to not directly change recd. data.
+
+    //replace the placeholder(s) in the file one by one.
+    output = output.replace(/{%TITLE%}/g, data.title);
+    output = output.replace(/{%PRICE%}/g, data.price);
+    output = output.replace(/{%ID%}/g, data.id);
+    output = output.replace(/{%DESCRIPTION%}/g, data.description);
+
+    return output;
+}
+
 module.exports = {
     writeFileToData,
-    getPostData
+    getPostData,
+    replaceTemplate
 }

@@ -1,6 +1,6 @@
 const http = require('http'); //first method of importing a module
 
-const { getProducts, getProductById, createProduct, updateProduct, deleteProduct } = require('./controllers/productController'); //method to include a function from a module usingf destructuring
+const { getProducts, getProductById, createProduct, updateProduct, deleteProduct, getProductByIdForView } = require('./controllers/productController'); //method to include a function from a module usingf destructuring
 
 
 const server = http.createServer((req, res) => {
@@ -12,6 +12,10 @@ const server = http.createServer((req, res) => {
         const id = req.url.split('/')[3]; //what is the id
         console.log(id)
         getProductById(req, res, id);
+    } else if (req.url.match(/\/product\/([0-9]+)/) && req.method === 'GET') { //View Product URL
+        const id = req.url.split('/')[2]; //what is the id
+        console.log(id)
+        getProductByIdForView(req, res, id);
     } else if (req.url === '/api/products' && req.method === 'POST') {
 
         createProduct(req, res);

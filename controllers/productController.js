@@ -24,8 +24,8 @@ async function getProducts(req, res) { //this function is going to be called whe
     }
 }
 
-// @desc Get single product
-// @route /api/product/:id
+// @desc Get single product 
+// @route /api/product/:id 
 async function getProductById(req, res, id) {
     try {
 

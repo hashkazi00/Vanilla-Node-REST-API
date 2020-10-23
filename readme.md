@@ -14,6 +14,8 @@ DELETE   /api/products/:id
 
 ```
 
+> Product View Route : /product/0-5
+
 ## Usage
 
 ```

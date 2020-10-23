@@ -14,7 +14,7 @@ function getPostData(req) {
         try {
 
             body = '';
-            req.on('data', (chunk) => {
+            req.on('data', (chunk) => { //req is a stream and it inherits from the EventEmitter by default, so we can listen to the data event on it also note that the chunk comes from stream 
                 body += chunk.toString();
             });
 

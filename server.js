@@ -4,7 +4,12 @@ const { getProducts, getProductById, createProduct, updateProduct, deleteProduct
 
 
 const server = http.createServer((req, res) => {
-    if (req.url === '/api/products' && req.method === 'GET') { //only incase of a get request
+    if (req.url === '/') {
+        res.writeHead(200, {
+            'Content-Type': 'text/html'
+        });
+        res.end('<h1> Full CRUD REST API using Node.js with no framework</h1> <br><code> Route To Query A Product: /product/1</code><br><a target="_blank" href="https://github.com/hashkazi00/Vanilla-Node-REST-API">Visit Github for API docs</a>');
+    } else if (req.url === '/api/products' && req.method === 'GET') { //only incase of a get request
         getProducts(req, res); //note that we passed in req and res so that the controller function does it's work
 
         //our 'controller' queries the model which contains the data and responds to the browsers request 

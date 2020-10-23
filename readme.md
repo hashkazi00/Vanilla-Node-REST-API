@@ -14,7 +14,9 @@ DELETE   /api/products/:id
 
 ```
 
-> Product View Route : /product/0-5
+> Product View Route : `/product/0-5`
+
+[Deployed On Heroku](https://vanilla-node-rest-api.herokuapp.com/product/1)
 
 ## Usage
 
